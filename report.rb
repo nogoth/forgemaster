@@ -42,7 +42,7 @@ end
 puts "Authors               : Closed " 
 authors = all.exclude( :Author => "" ).select(:Author).map(:Author)
 authors.histogram.each do |k,v|
-	puts "                        " +
+	puts " " + 
 		"#{k}  (#{v}) : #{all.filter(:Author => k,:Status => "Closed").count}" 
 end
 
