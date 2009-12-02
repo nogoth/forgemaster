@@ -12,17 +12,17 @@ sfield = fields.map{ |m| "String :#{m.gsub(/\s+/,'_')}"}.join("\n")
 
 DB = Sequel.sqlite('records.db')
 eval("
-DB.create_table? :users do
-  primary_key :id 
+DB.create_table? :import do
 	" + 
   sfield + "
 end
 ")
-p DB.schema(:users)
 
-users = DB[:users]
-reader.each_with_index do |entry,i|
-	users.insert( [i] + entry )
+
+users = DB[:import]
+
+reader.each do |entry|
+	users.insert( entry )
 end
 
 users.each do |entry|
