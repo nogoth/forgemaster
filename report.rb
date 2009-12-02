@@ -26,10 +26,10 @@ puts "Issues, no progress   :  #{nonclosed.filter( :percent_Done => "0" ).count 
 puts "Unassigned Issues     :  #{all.select(:Assigned_to).select_more(:Status).exclude( ~{:Assigned_to => ""}).count}"
 
 to_status = all.select(:Assigned_to).select_more(:Status).exclude(:Assigned_to => "")
-puts "Owned Issues          :  #{to_status.count}"
+#puts "Owned Issues          :  #{to_status.count}"
 
 owners = to_status.map {|a| a[:Assigned_to] }.uniq
-puts "Owners                : Closed " 
+puts "Owners                : Amount " 
 
 owners.each do |owner| 
 	puts "                        " +
@@ -39,11 +39,12 @@ owners.each do |owner|
 		" "
 end
 
-puts "Authors               : Closed " 
+
+puts "Authors               : Opened : Self Closed : Total Closed " 
 authors = all.exclude( :Author => "" ).select(:Author).map(:Author)
 authors.histogram.each do |k,v|
 	puts " " + 
-		"#{k}  (#{v}) : #{all.filter(:Author => k,:Status => "Closed").count}" 
+		"#{k}  : #{v} : #{all.filter(:Author => k,:Status => "Closed").count} : #{all.filter(:Assigned_to => k,:Status => "Closed").count}" 
 end
 
 
