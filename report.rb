@@ -29,7 +29,7 @@ to_status = all.select(:Assigned_to).select_more(:Status).exclude(:Assigned_to =
 puts "Owned Issues          :  #{to_status.count}"
 
 owners = to_status.map {|a| a[:Assigned_to] }.uniq
-puts "Owners                : " 
+puts "Owners                : Closed " 
 
 owners.each do |owner| 
 	puts "                        " +
