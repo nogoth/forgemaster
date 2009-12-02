@@ -10,7 +10,7 @@ fields.map!{ |m| m.gsub('#', 'number')
 
 sfield = fields.map{ |m| "String :#{m.gsub(/\s+/,'_')}"}.join("\n")
 
-DB = Sequel.sqlite('')
+DB = Sequel.sqlite('records.db')
 eval("
 DB.create_table? :users do
   primary_key :id 
@@ -20,3 +20,11 @@ end
 ")
 p DB.schema(:users)
 
+users = DB[:users]
+reader.each_with_index do |entry,i|
+	users.insert( [i] + entry )
+end
+
+users.each do |entry|
+	puts entry
+end
