@@ -9,5 +9,9 @@ STDIN.readlines.each do |line|
 					m = ma[1].gsub /\s/, ''
 					line.gsub! m,"*#{m}*"
 	end
-	puts line
+  line.gsub! "|Progress", "h2. Progress"
+  line.gsub! "Report|", "Report"
+
+  puts "\n" if line.match(/\=+/)
+	puts line unless line.match(/\=+/)
 end
