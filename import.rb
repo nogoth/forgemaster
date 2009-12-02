@@ -12,8 +12,9 @@ end
 sfield = fields.map{ |m| "String :#{m.gsub(/\s+/,'_')}"}.join("\n")
 
 DB = Sequel.sqlite('records.db')
+
 eval("
-DB.create_table? :import do 
+DB.create_table! :import do 
   " + sfield + "
 end
 ")
