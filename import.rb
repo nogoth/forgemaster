@@ -1,8 +1,10 @@
 require 'csv'
 require 'sequel'
 require 'sqlite3'
+file = ARGV[0] || 'export.csv'
+puts file
 
-reader = CSV.open('export.csv', 'r')
+reader = CSV.open(file, 'r')
 fields = reader.shift
 fields.map! do |m| 
 	tmp = m.gsub(/#/, 'number') 
