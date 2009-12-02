@@ -12,7 +12,7 @@ DB = Sequel.sqlite('records.db')
 nonclosed = DB[:import].filter( ~{:Status => 'Closed'} )
 all = DB[:import]
 
-puts "Progress Weekly Report"
+puts "Progress        Report"
 puts "======================"
 
 puts "New Issues            : " + all.filter( :Status => 'New' ).count.to_s
@@ -20,7 +20,10 @@ puts "New Issues            : " + all.filter( :Status => 'New' ).count.to_s
 puts "Non Closed Issues     : " + nonclosed.to_a.length.to_s 
 
 puts "Percent Finished, Open: " + nonclosed.exclude( :percent_Done => "0" ).avg(:percent_Done)
-puts "Issues, no progress   : " + nonclosed.filter( :percent_Done => "0" ).count.to_s
+puts "Issues, no progress   :  #{nonclosed.filter( :percent_Done => "0" ).count }"
+
+ 
+puts "Unassigned Issues     :  #{all.select(:Assigned_to).select_more(:Status).exclude( ~{:Assigned_to => ""}).count}"
 
 to_status = all.select(:Assigned_to).select_more(:Status).exclude(:Assigned_to => "")
 puts "Owned Issues          :  #{to_status.count}"
@@ -32,11 +35,11 @@ owners.each do |owner|
 	puts "                        " +
 	  owner + 
 	  " (" + to_status.filter(:Assigned_to => owner).count.to_s  +
-	  " " + to_status.filter(:Assigned_to => owner).map{|a| a[:Status] }.join(",") +
+#	  " " + to_status.filter(:Assigned_to => owner).map{|a| a[:Status] }.join(",") +
 		")"
 end
 
-puts "Authors                : " 
+puts "Authors               : " 
 authors = all.exclude( :Author => "" ).select(:Author).map(:Author)
 authors.histogram.each do |k,v|
 	puts "                        " +
