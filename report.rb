@@ -34,16 +34,16 @@ puts "Owners                : "
 owners.each do |owner| 
 	puts "                        " +
 	  owner + 
-	  " (" + to_status.filter(:Assigned_to => owner).count.to_s  +
+	  " :" + to_status.filter(:Assigned_to => owner).count.to_s  +
 #	  " " + to_status.filter(:Assigned_to => owner).map{|a| a[:Status] }.join(",") +
-		")"
+		" "
 end
 
-puts "Authors               : " 
+puts "Authors               : Closed " 
 authors = all.exclude( :Author => "" ).select(:Author).map(:Author)
 authors.histogram.each do |k,v|
 	puts "                        " +
-		"#{k}  (#{v}) Closed: #{all.filter(:Author => k,:Status => "Closed").count}" 
+		"#{k}  (#{v}) : #{all.filter(:Author => k,:Status => "Closed").count}" 
 end
 
 
