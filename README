@@ -1,0 +1,13 @@
+*Requires* +sequel+ gem to be installed on your machine as well as +sqlite3+
+
+Go to a project in redmine
+
+Grab a csv of issues
+
+run:
+
+ruby import.rb downloadedcsvfile.csv ; ruby report.rb | ruby wiki.rb | pbcopy
+
+open a forge wiki page, and paste into it.
+
+
