@@ -3,7 +3,7 @@ STDIN.readlines.each do |line|
 	line.gsub!(/:/, "|")
 	line.gsub!(/\n/, "|")
 	
-	if line =~ /Owners/ || line.match(/Authors/)
+	if line =~ /User/ || line.match(/Authors/)
 					puts "\n"
 					ma = line.match(/^\|(.*)\s\s\s/)
 					m = ma[1].gsub /\s/, ''

@@ -25,26 +25,19 @@ puts "Issues, no progress   :  #{nonclosed.filter( :percent_Done => "0" ).count 
  
 puts "Unassigned Issues     :  #{all.select(:Assigned_to).select_more(:Status).exclude( ~{:Assigned_to => ""}).count}"
 
-to_status = all.select(:Assigned_to).select_more(:Status).exclude(:Assigned_to => "")
-#puts "Owned Issues          :  #{to_status.count}"
+puts "Owned Issues          :  #{all.map(:Assigned_to).length}"
 
-owners = to_status.map {|a| a[:Assigned_to] }.uniq
-puts "Owners                : Amount " 
-
-owners.each do |owner| 
-	puts "                        " +
-	  owner + 
-	  " :" + to_status.filter(:Assigned_to => owner).count.to_s  +
-#	  " " + to_status.filter(:Assigned_to => owner).map{|a| a[:Status] }.join(",") +
-		" "
-end
+owners = all.map(:Assigned_to)  # {|a| a[:Assigned_to] }.uniq
+authors = all.map(:Author)
 
 
-puts "Authors               : Opened : Self Closed : Total Closed " 
-authors = all.exclude( :Author => "" ).select(:Author).map(:Author)
-authors.histogram.each do |k,v|
+assigned = owners.histogram
+tickets = authors.histogram.merge(assigned)
+authors = authors.histogram
+puts "User               : Assigned : Submitted : Self Closed : Total Closed " 
+tickets.each do |k,v|
 	puts " " + 
-		"#{k}  : #{v} : #{all.filter(:Author => k,:Status => "Closed").count} : #{all.filter(:Assigned_to => k,:Status => "Closed").count}" 
+		"#{k}  : #{assigned[k]} : #{authors[k]} : #{all.filter(:Author => k,:Status => "Closed").count} : #{all.filter(:Assigned_to => k,:Status => "Closed").count}" 
 end
 
 
